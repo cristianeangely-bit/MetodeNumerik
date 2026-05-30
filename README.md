@@ -1,2 +1,0 @@
-# MetodeNumerik
-Protofolio Metode Numerik
