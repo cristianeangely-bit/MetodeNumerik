@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Kopi Kalkulator Newton-Raphson</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #f5e6d3;
+    color: #4e342e;
+    text-align: center;
+}
+
+/* CARD UTAMA */
+.container {
+    width: 420px;
+    margin: 40px auto;
+    background: #fff8e1;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    border: 2px solid #d7ccc8;
+}
+
+/* JUDUL */
+h2 {
+    color: #6d4c41;
+    margin-bottom: 5px;
+}
+
+.subtitle {
+    font-size: 14px;
+    color: #8d6e63;
+    margin-bottom: 20px;
+}
+
+/* INPUT */
+input {
+    width: 80%;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+    border: 1px solid #bcaaa4;
+    background: #fff;
+    color: #4e342e;
+    font-weight: bold;
+}
+
+/* BUTTON */
+button {
+    padding: 10px 20px;
+    background: #8d6e63;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #5d4037;
+    transform: scale(1.05);
+}
+
+/* OUTPUT ITERASI */
+.result {
+    margin-top: 20px;
+    background: #efebe9;
+    padding: 15px;
+    border-radius: 12px;
+    text-align: left;
+    font-size: 14px;
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #d7ccc8;
+}
+
+/* HASIL AKHIR */
+.final {
+    margin-top: 20px;
+    background: #a1887f;
+    color: white;
+    padding: 15px;
+    border-radius: 12px;
+    font-weight: bold;
+}
+
+/* ICON */
+.coffee {
+    font-size: 30px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <div class="coffee">☕</div>
+    <h2>KOPI KALKULATOR</h2>
+    <div class="subtitle">Metode Newton-Raphson</div>
+
+    <p>f(x) = x³ - 4x - 9</p>
+
+    <input type="number" id="x0" placeholder="Masukkan tebakan awal (x0)">
+    <br>
+
+    <button onclick="hitung()">Hitung </button>
+
+    <div id="output" class="result"></div>
+    <div id="final" class="final"></div>
+</div>
+
+<script>
+
+function f(x) {
+    return Math.pow(x,3) - 4*x - 9;
+}
+
+function df(x) {
+    return 3*Math.pow(x,2) - 4;
+}
+
+function hitung() {
+    let x = parseFloat(document.getElementById("x0").value);
+    let output = "";
+
+    let maxIter = 10;
+    let toleransi = 0.001;
+    let error = 1;
+    let i = 0;
+
+    while (error > toleransi && i < maxIter) {
+
+        let fx = f(x);
+        let dfx = df(x);
+        let x1 = x - (fx / dfx);
+
+        error = Math.abs((x1 - x) / x1);
+
+        output += `
+         <b>Iterasi ${i}</b><br>
+        x${i} = ${x.toFixed(6)}<br>
+        f(x) = ${fx.toFixed(6)}<br>
+        f'(x) = ${dfx.toFixed(6)}<br>
+        x${i+1} = ${x1.toFixed(6)}<br>
+        Galat = <b>${error.toFixed(6)}</b>
+        <hr>
+        `;
+
+        x = x1;
+        i++;
+    }
+
+    document.getElementById("output").innerHTML = output;
+
+    document.getElementById("final").innerHTML = `
+         HASIL AKHIR<br>
+        Akar ≈ ${x.toFixed(6)}<br>
+        Iterasi: ${i}<br>
+        Toleransi: ${toleransi}
+    `;
+}
+
+</script>
+
+</body>
+</html>
